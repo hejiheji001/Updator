@@ -1,0 +1,97 @@
+.lpx-logo-container {
+    width: 50px;
+    padding: 20px 0 20px 20px;
+}
+
+#lpx-wrapper.hover-trigger .lpx-sidebar-container:not(:hover) .lpx-nav {
+    min-width: 50px;
+}
+
+#lpx-wrapper.hover-trigger .lpx-sidebar-container:not(:hover) {
+    min-width: 50px;
+    max-width: 50px;
+    overflow: hidden;
+}
+
+.hover-trigger .lpx-sidebar-container:not(:hover) .lpx-logo-container {
+    width: 50px;
+    padding: 20px 0 20px 20px;
+}
+
+#lpx-wrapper.hover-trigger .lpx-content-container {
+    margin-left: 50px;
+}
+
+.lpx-content-container .lpx-content {
+    padding: 1em;
+    margin: 0 auto;
+}
+
+.container {
+    padding: 0;
+    margin: 0;
+}
+
+table.dataTable tbody tr td {
+    border-color: #e7e9ec;
+    padding: 0.5em;
+}
+
+table.dataTable thead th {
+    text-align: center;
+}
+
+table.dataTable tbody td {
+    font-size: 12px;
+}
+
+table.dataTable tbody tr > td:nth-child(4),
+table.dataTable tbody tr > td:nth-child(5){
+    text-align: left;
+}
+
+@media (min-width: 576px) {
+    .container-sm, .container {
+        max-width: 576px;
+    }
+}
+@media (min-width: 768px) {
+    .container-md, .container-sm, .container {
+        max-width: 768px;
+    }
+}
+@media (min-width: 992px) {
+    .container-lg, .container-md, .container-sm, .container {
+        max-width: 992px;
+    }
+}
+@media (min-width: 1200px) {
+    .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 1200px;
+    }
+}
+@media (min-width: 1400px) {
+    .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 1400px;
+    }
+}
+
+.left {
+    text-align: left;
+}
+
+.checkbox {
+    display: none;
+}
+
+.batch {
+    display: none;
+}
+
+#calendar {
+    width: 100%;
+}
+
+.container {
+    max-width: 100%;
+}

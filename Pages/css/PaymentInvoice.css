@@ -1,0 +1,46 @@
+thead {
+    text-align: left;
+    vertical-align: top !important;
+}
+
+th, tr, td {
+    border: none;
+    color: black !important;
+    font-size: 16px;
+    background-color: transparent !important;
+}
+
+.underLine {
+    border: black;
+    border-style: none none solid;
+    border-width: 2px !important;
+}
+
+.topLine {
+    border: black;
+    border-style: solid none none none;
+    border-width: 2px !important;
+}
+
+.invoice td {
+    font-size: 14px;
+}
+
+.item {
+    border: gray;
+    border-style: solid none solid none;
+}
+
+tbody td {
+    text-align: justify;
+}
+
+.narrow {
+    max-width: 150px;
+    width: 150px;
+}
+
+.wide {
+    min-width: 500px;
+    width: 500px;
+}

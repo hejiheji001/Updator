@@ -1,0 +1,17 @@
+.view button{
+    background-color: transparent;
+    border: none;
+    color: blue;
+}
+
+.checkbox {
+    display: table-cell;
+}
+
+td {
+    text-align: center !important;
+}
+
+a.invoice {
+    text-decoration: none;
+}
