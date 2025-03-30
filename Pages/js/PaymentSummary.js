@@ -50,10 +50,10 @@ $(function () {
         columnDefs: [
             {
                 title: l('Check'),
-                data: "check",
+                data: "id",
                 className: "checkbox",
                 render: function (data) {
-                    return `<input type='checkbox' class='checkbox'/>`;
+                    return `<input type='checkbox' class='checkbox batchPayment' value="${data}"/>`;
                 }
             },
             {
@@ -109,6 +109,23 @@ $(function () {
 
     startDateFilter.value = "";
     endDateFilter.value = "";
+    
+    $("#batchPaymentButton").on("click", function (e) {
+        e.preventDefault();
+        let checked = $(".batchPayment:checked").get().map(x => x.value);
+        if (checked.length > 0) {
+            $("#checkedInvoices").val(checked);
+            $("#batchPaymentForm").submit();
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: l('Please Select Invoices!'),
+                icon: 'error',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK',
+            });
+        }
+    });
     
     init = true;
 });
