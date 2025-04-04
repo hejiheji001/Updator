@@ -253,3 +253,7 @@ img {
     border-radius: 50%;
     background: red;
 }
+
+.progress p {
+    color: white;
+}

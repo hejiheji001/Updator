@@ -63,7 +63,7 @@ const inputAction = function (requestData) {
     
     requestData.priority = priorityFilter.value;
     requestData.urgency = urgencyFilter.value;
-    requestData.paid = paymentFilter.value;
+    requestData.paid = -1;
     
     return requestData;
 };
@@ -147,9 +147,6 @@ $(function () {
                         location += "...";
                     }
                     return location;
-                    // let status = data.workType;
-                    // let days = data.remainingDays;
-                    // return `${status}</br>(${Math.abs(days)} calendar days ${days > 0 ? 'remaining' : 'overdue'})`;
                 }
             },
             {

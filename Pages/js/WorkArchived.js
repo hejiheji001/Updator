@@ -62,7 +62,7 @@ const inputAction = function (requestData) {
     }
 
     requestData.priority = priorityFilter.value;
-    requestData.urgency = urgencyFilter.value;
+    requestData.urgency = 0;
     requestData.paid = paymentFilter.value;
 
     return requestData;
@@ -89,7 +89,7 @@ $(function () {
                 data: "orderInfo",
                 //visible: abp.auth.isGranted('Dispatcher.Works.Edit'),
                 render: function (data) {
-                    return `<a href="${detailPage}?id=${data[1]}">${data[0]}</br>${isAdmin ? data[2] : data[3]}</a>`;
+                    return `<span class="paid_${data[5]}">$</span><a href="${detailPage}?id=${data[1]}">${data[0]}</br>${isAdmin ? data[2] : data[3]}</a>`;
                 }
             },
             {
@@ -198,6 +198,15 @@ $(function () {
                 dom.addClass(color);
             });
         }
+    });
+
+    $('#batchPaidButton').click(function (e) {
+        e.preventDefault();
+        $('#paidOrderFile').click();
+    });
+
+    $('#paidOrderFile').change(function () {
+        $('#paidOrderForm').submit();
     });
 
     let dataTable = $('#WorksTable').DataTable(data);
