@@ -1,5 +1,3 @@
-const l = abp.localization.getResource('Dispatcher');
-
 const template = "template";
 const container = "container";
 const detail = "detail";
@@ -147,26 +145,14 @@ const initAssignDoneButton = function (e) {
                     $(`tr[data='${id}'] td[data='contractor']`).html(contractorName);
                 });
 
-                Swal.fire({
-                    title: 'Success',
-                    text: l('Job Assigned'),
-                    icon: 'success',
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'OK',
-                });
+                promptOK('Job Assigned')
                 $(assignJobsValueId).val("");
                 jobChecks.click();
                 jobChecks.attr("assigned", contractor);
                 $(contractorListClass).val("0");
             },
             error: function (e){
-                Swal.fire({
-                    title: 'Error',
-                    text: l('Job Not Assigned - Job Code Mismatch?'),
-                    icon: 'error',
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'OK',
-                });
+                promptError('Job Not Assigned - Job Code Mismatch?')
                 $(assignJobsValueId).val("");
                 jobChecks.click();
             }
@@ -184,11 +170,6 @@ const initAssignDoneButton = function (e) {
         
         $(`${editButtonClass}[suffix]`).click();
     }
-}
-
-const getSearch = function (param) {
-    let params = new URLSearchParams(location.search);
-    return params.get(param);
 }
 
 const initUpdateButton = function(e) {
@@ -216,37 +197,19 @@ const initUpdateButton = function(e) {
     if (isNew) {
         let orderId = $("[name='work.OrderId']").val();
         if (orderId === '') {
-            Swal.fire({
-                title: 'Error',
-                text: l('OrderId Not Assigned!'),
-                icon: 'error',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'OK',
-            });
+            promptError('OrderId Not Assigned!')
             return;
         }
         
         let address = $("[name='work.Address']").val();
         if (address === '') {
-            Swal.fire({
-                title: 'Error',
-                text: l('Address Not Assigned!'),
-                icon: 'error',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'OK',
-            });
+            promptError('Address Not Assigned!')
             return;
         }
 
         let issued = $("[name='work.IssuedActual']").val();
         if (issued === '') {
-            Swal.fire({
-                title: 'Error',
-                text: l('Issued Actual Time Not Assigned!'),
-                icon: 'error',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'OK',
-            });
+            promptError('Issued Actual Time Not Assigned!')
             return;
         }
     }
@@ -306,12 +269,12 @@ const initUpdateButton = function(e) {
                         prepareDom(dom, targetFor, templateGeneral);
                         return dom;
                     });
-                    showComplete();
+                    promptOK('Complete!');
                 }
             }
             
             if (target === comment) {
-                showComplete();
+                promptOK('Complete!');
             }
         }
     }.bind(this));
@@ -520,15 +483,6 @@ const linkSearch = function (dom) {
                 $("#CodeTableData").hide();
             });
         }, 1000);
-    });
-}
-
-const showComplete = function () {
-    Swal.fire({
-        title: 'Success',
-        icon: 'success',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'OK',
     });
 }
 

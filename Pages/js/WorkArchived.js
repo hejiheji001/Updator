@@ -1,9 +1,4 @@
-const l = abp.localization.getResource('Dispatcher');
 let init = false;
-const getDate = function (str) {
-    if (str === null || str === "0" || str.includes("0001") || !str) return "Not Available";
-    return (new Date(str)).toLocaleDateString();
-};
 
 let specialOrders = [
     {
@@ -69,7 +64,7 @@ const inputAction = function (requestData) {
 };
 
 $(function () {
-    const detailPage = abp.appPath + 'Works/EditModal';
+    const detailPage = abp.appPath + 'Works/WorkDetail';
     const isAdmin = abp.auth.isGranted("AbpIdentity.Roles.ManagePermissions");
 
     // abp.appPath = "https://localhost:44312/"
@@ -89,7 +84,7 @@ $(function () {
                 data: "orderInfo",
                 //visible: abp.auth.isGranted('Dispatcher.Works.Edit'),
                 render: function (data) {
-                    return `<span class="paid_${data[5]}">$</span><a href="${detailPage}?id=${data[1]}">${data[0]}</br>${isAdmin ? data[2] : data[3]}</a>`;
+                    return `<span class="paid_${data[5]}">$</span><a href="${detailPage}?id=${data[1]}" target="_blank">${data[0]}</br>${isAdmin ? data[2] : data[3]}</a>`;
                 }
             },
             {
@@ -107,12 +102,15 @@ $(function () {
                 title: l('AppointmentTime'),
                 data: "appointmentTime",
                 render: function (data) {
-                    return getDate(data);
+                    return `<div class="left padding-left-10">${getDate(data)}</div>`;
                 }
             },
             {
                 title: l('Priority'),
-                data: "priorityCode"
+                data: "priorityCode",
+                render : function (data) {
+                    return `<div class="left padding-left-10">${data}</div>`
+                }
             },
             {
                 title: l('Status'),
@@ -147,16 +145,13 @@ $(function () {
                         location += "...";
                     }
                     return location;
-                    // let status = data.workType;
-                    // let days = data.remainingDays;
-                    // return `${status}</br>(${Math.abs(days)} calendar days ${days > 0 ? 'remaining' : 'overdue'})`;
                 }
             },
             {
                 title: l('IssuedActual'),
                 data: "issuedActual",
                 render: function (data) {
-                    return getDate(data);
+                    return `<div class="left padding-left-10">${getDate(data)}</div>`;
                 }
             },
             {

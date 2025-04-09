@@ -1,4 +1,3 @@
-const l = abp.localization.getResource('Dispatcher');
 let init = false;
 
 let specialOrders = [
@@ -20,7 +19,9 @@ const inputAction = function (requestData) {
             }
         });
     }
-
+    let force = getSearch("force");
+    
+    requestData.forceUpdate = force ? force : false;
     requestData.startDate = startDateFilter.value;
     requestData.endDate = endDateFilter.value;
 
@@ -51,17 +52,19 @@ $(function () {
             {
                 title: l('Check'),
                 data: "id",
-                className: "checkbox",
+                className: "checkbox non-selection select-all",
+                orderable: false,
                 render: function (data) {
                     return `<input type='checkbox' class='checkbox batchPayment' value="${data}"/>`;
                 }
             },
             {
                 title: l('View'),
-                className: "view",
+                className: "view non-selection",
                 data: "reference",
+                orderable: false,
                 render: function (data) {
-                    return `<a class="fa fa-eye me-1 invoice" href="${detailPage}?id=${data[4]}"></a>`;
+                    return `<a class="fa fa-eye me-1 invoice" target="_blank" href="${detailPage}?id=${data[4]}"></a>`;
                 }
             },
             {
@@ -71,21 +74,32 @@ $(function () {
             {
                 title: l('Reference'),
                 data: "reference",
+                className: "non-selection",
+                orderable: false,
                 render: function (data) {
                     return `INV-${data[0]}/${data[1]}-${data[2]}_${data[3]}`;
                 }
             },
             {
                 title: l('Date'),
-                data: "createdDate"
+                data: "createdDate",
+                render: function (data) {
+                    return getDate(data);
+                }
             },
             {
                 title: l('Paid'),
-                data: "paid"
+                data: "paid",
+                render: function (data) {
+                    return `<div class="left padding-left-10">${data}</div>`
+                }
             },
             {
                 title: l('Due'),
-                data: "contractorPrice"
+                data: "contractorPrice",
+                render: function (data) {
+                    return `<div class="left padding-left-10">${data}</div>`
+                }
             }
         ],
         drawCallback: function (settings, json) {
@@ -117,14 +131,12 @@ $(function () {
             $("#checkedInvoices").val(checked);
             $("#batchPaymentForm").submit();
         } else {
-            Swal.fire({
-                title: 'Error',
-                text: l('Please Select Invoices!'),
-                icon: 'error',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'OK',
-            });
+            promptError('Please Select Invoices!');
         }
+    });
+    
+    $(".select-all").on("click", function (e) {
+        $(".batchPayment").click();
     });
     
     init = true;

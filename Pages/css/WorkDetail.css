@@ -1,0 +1,75 @@
+@keyframes blink {
+    50% {
+        border-width: 1px;
+        border-color: #355dff;
+    }
+}
+
+.blink-border{
+    border-style: solid;
+    animation: blink .5s step-end infinite alternate;
+    border-width: 1px;
+}
+
+.new-entry {
+    text-align: right;
+}
+
+.assign-control {
+    width: 120px !important;
+}
+
+textarea.editable {
+    width: 100%;
+    padding: 5px;
+}
+
+input.editable {
+    width: 70px;
+    text-align: center;
+    padding: 0;
+}
+
+[type='file'].editable {
+    width: 100%;
+}
+
+#assignJobsForm {
+    display: inline;
+}
+
+#CodeTable, #CodeTable_wrapper {
+    position: absolute;
+    width: 500px;
+    text-align: left;
+    background: lightblue;
+    right: 10px;
+    display: none;
+}
+
+#CodeTable_wrapper table th {
+    text-align: left;
+}
+
+#CodeTableData {
+    display: none;
+    position: absolute;
+    background-color: rgb(44 137 206);
+    color: white;
+    border-radius: 5px;
+    max-height: 400px;
+    overflow: scroll;
+}
+
+#CodeTableData thead {
+    background-color: #438aa7;
+}
+
+#CodeTableData tbody tr:hover {
+    background-color: #355dff;
+    cursor: pointer;
+}
+
+#CodeTableData td {
+    padding: 5px;
+}

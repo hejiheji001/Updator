@@ -14,4 +14,15 @@ td {
 
 a.invoice {
     text-decoration: none;
+    color: var(--bs-link-color);
+}
+
+.select-all {
+    text-decoration: underline;
+    color: var(--bs-link-color);
+    cursor: pointer;
+}
+
+.date-picker {
+    width: 150px !important;
 }

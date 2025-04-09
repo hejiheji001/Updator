@@ -1,10 +1,7 @@
+const createModal = new abp.ModalManager(abp.appPath + 'Contractors/CreateModal');
+const editModal = new abp.ModalManager(abp.appPath + 'Contractors/EditModal');
 $(function () {
-    var l = abp.localization.getResource('WorkDispatch');
-    var createModal = new abp.ModalManager(abp.appPath + 'Contractors/CreateModal');
-    var editModal = new abp.ModalManager(abp.appPath + 'Contractors/EditModal');
-
-    //abp.appPath = "https://localhost:44312/"
-    var dataTable = $('#ContractorsTable').DataTable(
+    const dataTable = $('#ContractorsTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
             paging: true,
