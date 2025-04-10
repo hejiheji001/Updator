@@ -1,0 +1,21 @@
+td.dt-control {
+    text-align: center;
+    cursor: pointer;
+}
+
+td.dt-control:before {
+    display: inline-block;
+    box-sizing: border-box;
+    content: "";
+    border-top: 5px solid transparent;
+    border-left: 10px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 5px solid transparent;
+    border-right: 0 solid transparent;
+}
+
+tr.dt-hasChild td.dt-control:before {
+    border-top: 10px solid rgba(0, 0, 0, 0.5);
+    border-left: 5px solid transparent;
+    border-bottom: 0 solid transparent;
+    border-right: 5px solid transparent;
+}
