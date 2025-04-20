@@ -64,7 +64,7 @@ $(function () {
                 data: "reference",
                 orderable: false,
                 render: function (data) {
-                    return `<a class="fa fa-eye me-1 invoice" target="_blank" href="${detailPage}?id=${data[4]}"></a>`;
+                    return `<a class="fa fa-eye me-1 invoice" href="${detailPage}?id=${data[4]}"></a>`;
                 }
             },
             {

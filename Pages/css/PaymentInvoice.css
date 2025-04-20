@@ -49,3 +49,7 @@ tbody td {
     min-width: 200px;
     width: 200px;
 }
+
+.container {
+    overflow: scroll;
+}

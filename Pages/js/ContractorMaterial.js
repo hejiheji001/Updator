@@ -35,13 +35,27 @@ const inputAction = function (requestData) {
 };
 
 const format = function(d) {
-    // `d` is the original data object for the row
-    console.log(d.materials);
-    return 1;
+    let materials = d.materials.map(material => `<td>${material.creator}</td><td>${material.description}</td><td>${material.price}</td><td class="center">${getDate(material.dateTime)}</td><td class="center">${material.isPaid}</td>`);
+    console.log(materials);
+    return `
+    <table style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Creator</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Time</th>
+                <th>Paid</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>${materials.join("</tr><tr>")}</tr>
+        </tbody>
+    </table>`;
 }
 
 $(function () {
-    const detailPage = abp.appPath + 'Works/MaterialDetail';
+    const detailPage = abp.appPath + 'Works/ContractorMaterialDetail';
     const isAdmin = abp.auth.isGranted("AbpIdentity.Roles.ManagePermissions");
 
     // abp.appPath = "https://localhost:44312/"
@@ -63,15 +77,21 @@ $(function () {
                 defaultContent: ''
             },
             {
-                title: l('Reference'),
+                title: l('Contractor'),
                 data: "materialInfo",
+                className: 'left',
                 render: function (data) {
-                    return `<a href="${detailPage}?id=${data[1]}" target="_blank">${data[0]}</a>`;
+                    return data[0];
+                    // return `<a class="padding-left-10" href="${detailPage}?id=${data[1]}" target="_blank">${data[0]}</a>`;
                 }
             },
             {
                 title: l('Price'),
-                data: "priceStr"
+                className: 'left',
+                data: "priceStr",
+                render: function (data) {
+                    return `<div class="padding-left-10">${data}</div>`;
+                }
             }
         ],
         drawCallback: function (settings, json) {
@@ -134,12 +154,19 @@ $(function () {
                     showCancelButton: true,
                 }).then(result => {
                     if (result.isConfirmed) {
-                        window.open(`/Works/ContractorMaterialDetail?id=${result.value}&create=true`);
+                        let productCreateModal = new abp.ModalManager({
+                            viewUrl: `/Works/ContractorMaterialCreateModal?id=${result.value}`
+                        });
+                        productCreateModal.open();
+                        productCreateModal.onResult(function(){
+                            if (arguments[1].responseText === true) {
+                                console.log(1);
+                            }
+                        });
                     }
                 })
             }
         });
-        
         $(".swal2-confirm").click();
     });
     
