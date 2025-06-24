@@ -1,0 +1,30 @@
+td.dt-control {
+    text-align: center;
+    cursor: pointer;
+}
+
+td.dt-control:before {
+    display: inline-block;
+    box-sizing: border-box;
+    content: "";
+    border: none !important;
+    background-color: transparent !important;
+}
+
+tr.dt-hasChild td.dt-control:before {
+    border: none;
+    content: "▼" !important;
+    text-indent: -3px;
+}
+
+.swalInfo {
+    font-family: monospace;
+    text-align: left;
+    font-size: 14px;
+}
+
+.btn-tiny {
+    padding: 0 2px 0 2px;
+    border-radius: 2px;
+    margin: 1px;
+}

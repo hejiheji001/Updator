@@ -1,0 +1,19 @@
+.pdfjs-toolbar, .pdfjs-toolbar i {
+    font-size: 14px;
+}
+.pdfjs-toolbar span {
+    margin-right: 0.5em;
+    margin-left: 0.5em;
+    width: 4em !important;
+    font-size: 12px;
+}
+.pdfjs-toolbar .btn-sm {
+    padding: 0.12rem 0.25rem;
+
+}
+.pdfjs-toolbar {
+    width: 100%;
+    height: auto;
+    background: #ddd;
+    z-index: 100;
+}
