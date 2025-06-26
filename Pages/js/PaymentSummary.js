@@ -79,7 +79,6 @@ $(function () {
             {
                 title: l('Reference'),
                 data: "reference",
-                className: "non-selection",
                 orderable: false,
                 render: function (data) {
                     return `INV-${data[0]}/<a href="/Works/WorkDetail?id=${data[8]}">${data[1]}</a>-${data[2]}_${data[3]}`;

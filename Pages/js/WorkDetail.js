@@ -709,18 +709,18 @@ $(function () {
     });
     $('#CodeTable').DataTable(data);
 
-    let imgGroups = $('.imgs').get();
-    let imgContainers = $('.imgContainer').get();
-    for (let i = 0; i < imgGroups.length; i++) {
-        let group = $(imgGroups[i]);
-        let imgs = group.val().split(',').map(i => `<img alt="${i}" src="https://${location.host}/download/${i}"/>`);
-        let count = imgs.length;
-        let m = 0;
-        let load = self.setInterval(function () {
-            $(imgContainers[i]).append(imgs[m++]);
-            if (m === count) {
-                self.clearInterval(load);
-            }
-        }, 1000);
-    }
+    // let imgGroups = $('.imgs').get();
+    // let imgContainers = $('.imgContainer').get();
+    // for (let i = 0; i < imgGroups.length; i++) {
+    //     let group = $(imgGroups[i]);
+    //     let imgs = group.val().split(',').map(i => `<img alt="${i}" src="https://${location.host}/download/${i}"/>`);
+    //     let count = imgs.length;
+    //     let m = 0;
+    //     let load = self.setInterval(function () {
+    //         $(imgContainers[i]).append(imgs[m++]);
+    //         if (m === count) {
+    //             self.clearInterval(load);
+    //         }
+    //     }, 1000);
+    // }
 });
