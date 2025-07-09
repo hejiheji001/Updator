@@ -6,10 +6,28 @@ $(function () {
     $(".lpx-brand-logo").html("BYDH Construction Ltd");
 });
 
+const setupData = function (requestData) {
+    if (!init) {
+        requestData.order = {};
+        requestData.sorting = "creationTime desc";
+        window.sorting = requestData.sorting;
+    } else {
+        let sort = requestData.order[0];
+        let data = requestData.columns[sort.column].data;
+
+        specialOrders.forEach(o => {
+            if (o.data === data) {
+                requestData.order = {};
+                requestData.sorting = window.refresh ? window.sorting : `${o.target} ${sort.dir}`;
+            }
+        });
+        window.sorting = requestData.sorting;
+    }
+}
+
 const workData = {
     serverSide: true,
     paging: true,
-    order: [[9, "asc"]],
     searching: true,
     scrollX: true,
     columnDefs: [
@@ -99,9 +117,11 @@ const workData = {
                                 return l('WorkDeletionConfirmationMessage', data.record.name);
                             },
                             action: function (data) {
-                                works.dispatcher.works.work.delete(data.record.id).then(function () {
+                                works.dispatcher.works.work.deleteByWorkId(data.record.id).then(function () {
                                     abp.notify.info(l('SuccessfullyDeleted'));
+                                    window.refresh = true;
                                     dataTable.ajax.reload();
+                                    window.refresh = false;
                                 });
                             }
                         }
@@ -129,7 +149,7 @@ const workData = {
 
 const formatLocation = function(location) {
     let tmp = location.split("");
-    let words = 25
+    let words = 13
     let index = Math.floor(tmp.length / words);
     for (let i = 1; i <= index; i++) {
         tmp[i * words] += "</br>";
@@ -178,4 +198,22 @@ const promptHTML = function (message, title, callback) {
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'OK',
     }).then(callback);
+}
+
+const promptInput = function (title, message, callback) {
+    Swal.fire({
+        title: title,
+        input: "text",
+        html: `<div class="swalInfo">${message}</div>`,
+        inputAttributes: {
+            autocapitalize: "off"
+        },
+        showCancelButton: true,
+        confirmButtonText: "OK",
+        showLoaderOnConfirm: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            callback(result.value);
+        }
+    });
 }

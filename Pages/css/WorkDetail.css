@@ -5,6 +5,11 @@
     }
 }
 
+.desc {
+    max-width: 80px;
+    overflow-wrap: break-word;
+}
+
 .blink-border{
     border-style: solid;
     animation: blink .5s step-end infinite alternate;
@@ -81,4 +86,40 @@ img {
 #updateForm {
     max-width: 100%;
     overflow: scroll;
+}
+
+.dataTables_wrapper > .dt-row > .col-sm-12 {
+    overflow: scroll;
+}
+
+.toggle_hidden_text {
+    cursor: pointer;
+}
+
+.hidden_text {
+    display: none;
+}
+
+.confirm {
+    width: auto !important;
+}
+
+table.dataTable tbody tr td i.fa.fa-check {
+    color: white;
+}
+
+.quantity {
+    width: 60px !important;
+}
+
+#setupheader {
+    color: rgb(44 137 206);
+}
+
+#setupheader:hover {
+    color: var(--bs-primary);
+}
+
+option {
+    text-align: left;
 }

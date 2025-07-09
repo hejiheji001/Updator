@@ -4,8 +4,8 @@ const detail = "detail";
 const item = "item";
 const image = "image";
 const file = "file";
-const save = l("Save");
-const edit = l("Edit");
+const save = '<i class="lpx-icon fa fa-check" aria-hidden="true"></i>';
+const edit = '<i class="lpx-icon fa fa-gear" aria-hidden="true"></i>';
 const comment = "comment";
 const disabled = "disabled";
 const button = "Button";
@@ -85,6 +85,8 @@ const initGroupDownloadButton = function (e) {
 const initEditButton = function(e) {
     e.preventDefault();
 
+    showAllColumns();
+
     let dataFor = $(this).attr("data");
     let targetFor = $(this).attr("target");
     let general = `[target='${targetFor}'][data='${dataFor}']`
@@ -112,6 +114,7 @@ const initEditButton = function(e) {
 const initAssignButton = function (e) {
     e.preventDefault();
 
+    showAllColumns();
     domHide(editButtonClass);
     domHide(assignButtonClass);
     domShow(assignDoneButtonClass);
@@ -169,6 +172,7 @@ const initAssignDoneButton = function (e) {
         domHide(checkAll)
         
         $(`${editButtonClass}[suffix]`).click();
+        hiddenColumns();
     }
 }
 
@@ -273,10 +277,12 @@ const initUpdateButton = function(e) {
                 }
             }
             
-            if (target === comment) {
+            if (target === comment || (target === detail)) {
                 promptOK('Complete!');
             }
         }
+
+        hideColums();
     }.bind(this));
 }
 
@@ -542,6 +548,33 @@ const prepareDom = function (dom, targetFor, general) {
     })
 }
 
+const hideColums = function () {
+    var arr = localStorage['hiddenColumns'].split(",");
+    var adminCols = adminCodes.getElementsByTagName('col');
+    var contractorCols = contractorCodes.getElementsByTagName('col');
+
+    showAllColumns();
+
+    arr.forEach(i => {
+        var a = adminCols[i - 1];
+        var b = contractorCols[i - 1];
+
+        if (a) {
+            a.style.visibility = "collapse";
+        }
+
+        if (b) {
+            b.style.visibility = "collapse";
+        }
+    });
+}
+
+const showAllColumns = function () {
+    var adminCols = adminCodes.getElementsByTagName('col');
+    var contractorCols = contractorCodes.getElementsByTagName('col');
+    Object.values(adminCols).concat(Object.values(contractorCols)).forEach(x => x.style.visibility = "");
+}
+
 $(function () {
     $(editButtonClass).click(initEditButton);
 
@@ -557,6 +590,8 @@ $(function () {
 
     $(addButtonClass).click(function (e) {
         e.preventDefault();
+
+        showAllColumns();
 
         let targetFor = $(this).attr("target");
         let targetAttr = `target='${targetFor}'`;
@@ -628,6 +663,7 @@ $(function () {
                     domShow(editButtonClass);
                     disableEditable(editableClass);
                     window.clearInterval(interval);
+                    hideColums();
                 }
                 success = updates.html() === save && (new Set(updates.get().map(x => $(x).html()))).size === 1;
             }, 200);
@@ -666,6 +702,20 @@ $(function () {
             x.checked = assigned === id;
         });
     });
+    
+    $(".toggle_hidden_text").click(function() {
+       let target = $(this).attr("target");
+       $(`.hidden_text[toggle='${target}']`).toggle();
+    });
+    
+    $("#nav-files-tab").click(function() {
+       let containers = $(".imgContainer").get();
+       for (let i = 0; i < containers.length; i++) {
+           let imgs = $(containers[i]).find(".imgContent").val().split(",").map(x => `<img src="/download/${x}" class="rounded"/>`);
+           $(containers[i]).find("img").remove();
+           $(containers[i]).append(imgs);
+       }
+    });
 
     const codeTable = $('#nav-tasks > table').DataTable({
         info: false,
@@ -682,6 +732,14 @@ $(function () {
     $(checkAll).click(function () {
         let checked = $(this).prop("checked");
         $(`#item-container ${assignCheckBoxClass}`).prop("checked", checked);
+    });
+
+    $("#setupheader").click(function () {
+        promptInput("Setup Header Display", `Input the <b>Index of Headers</b> you want to display or show by default.</br></br>For example, if you enter 1,2,4, then the 1st, 2nd and 4th columns will be invisible, if you enter 1, 3 again, the 2nd and 4th columns will show up but 1st and 3rd column will disappear.</br></br> Enter 0 to display all columns</br></br>Current ${(localStorage['hiddenColumns'] ? localStorage['hiddenColumns'] : "NO")} columns are hidden`, function (info) {
+            localStorage['hiddenColumns'] = info;
+            hideColums();
+        });
+
     });
 
     const isAdmin = abp.auth.isGranted("AbpIdentity.Roles.ManagePermissions");
@@ -709,18 +767,5 @@ $(function () {
     });
     $('#CodeTable').DataTable(data);
 
-    // let imgGroups = $('.imgs').get();
-    // let imgContainers = $('.imgContainer').get();
-    // for (let i = 0; i < imgGroups.length; i++) {
-    //     let group = $(imgGroups[i]);
-    //     let imgs = group.val().split(',').map(i => `<img alt="${i}" src="https://${location.host}/download/${i}"/>`);
-    //     let count = imgs.length;
-    //     let m = 0;
-    //     let load = self.setInterval(function () {
-    //         $(imgContainers[i]).append(imgs[m++]);
-    //         if (m === count) {
-    //             self.clearInterval(load);
-    //         }
-    //     }, 1000);
-    // }
+    hideColums();
 });

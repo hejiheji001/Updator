@@ -24,6 +24,10 @@
     }
 }
 
+.form-select:disabled {
+    background-image: none !important;
+}
+
 .lpx-logo-container {
     width: 50px;
     padding: 10px 0 15px 3px !important;
@@ -44,10 +48,12 @@
 .lpx-brand-logo {
     height: 50px !important;
     background-size: auto 50px !important;
+    overflow: hidden;
 }
 
 #lpx-wrapper.hover-trigger .lpx-sidebar-container:not(:hover) .lpx-nav {
     min-width: 50px;
+    max-width: 50px;
 }
 
 #lpx-wrapper.hover-trigger .lpx-sidebar-container:not(:hover) {
@@ -82,10 +88,13 @@ table, thead {
 table.dataTable tbody tr td {
     border-color: #e7e9ec;
     padding: 0.5em;
+    text-align: center !important;
 }
 
 table.dataTable thead th {
-    text-align: center;
+    text-align: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
 table.dataTable tbody td {
@@ -121,6 +130,16 @@ table.dataTable tbody tr > td:nth-child(5){
     .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
         max-width: 1400px;
     }
+}
+
+abp-date-picker input, .location {
+    font-size: xx-small !important;
+    min-width: 100px !important;
+}
+
+.item-list .row .item-list-item a {
+    width: 50%;
+    margin-bottom: 5px;
 }
 
 .left {
@@ -307,4 +326,8 @@ table.dataTable thead .sorting.freeze {
 
 .dot_False {
     display: none;
+}
+
+.fa-spin {
+    animation: fa-spin 1s linear infinite;
 }

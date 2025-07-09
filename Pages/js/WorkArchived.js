@@ -41,22 +41,8 @@ let specialOrders = [
 ];
 
 const inputAction = function (requestData) {
-    if (!init) {
-        requestData.order = {};
-        requestData.sorting = "creationTime desc";
-    } else {
-        let sort = requestData.order[0];
-        let data = requestData.columns[sort.column].data;
-
-        specialOrders.forEach(o => {
-            if (o.data === data) {
-                requestData.order = {};
-                requestData.sorting = `${o.target} ${sort.dir}`;
-                console.log(requestData.sorting)
-            }
-        });
-    }
-
+    setupData(requestData);
+    
     requestData.priority = priorityFilter.value;
     requestData.urgency = 0;
     requestData.paid = paymentFilter.value;
@@ -184,7 +170,7 @@ $(function () {
         form.submit();
     });
 
-    let dataTable = $('#WorksTable').DataTable(data);
+    window.dataTable = $('#WorksTable').DataTable(data);
     let filter = $('.filter');
     filter.change(function () {
         dataTable.draw();
