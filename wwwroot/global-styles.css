@@ -1,0 +1,30 @@
+/* Your Global Styles */
+
+:root .lpx-brand-logo {
+    --lpx-logo:url(/Pages/img/bydh.png);
+    --lpx-logo-icon: url(/Pages/img/bydh.png);
+}
+
+.lpx-logo-container {
+    width: 50px;
+    padding: 10px 0 15px 15px;
+}
+
+.lpx-logo-container a {
+    height: 50px !important;
+    background-size: auto 50px !important;
+    color: white !important;
+    text-align: left !important;
+    line-height: 50px !important;
+    font-size: 15px !important;
+    text-decoration: none !important;
+    text-indent: 50px !important;
+}
+
+.lpx-mobile-navbar .lpx-logo-container a {
+    font-size: 20px !important;
+}
+
+.lpx-brand-logo {
+    overflow: hidden;
+}
