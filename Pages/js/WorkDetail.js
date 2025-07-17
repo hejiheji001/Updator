@@ -550,6 +550,10 @@ const prepareDom = function (dom, targetFor, general) {
 
 const hideColums = function () {
     var arr = localStorage['hiddenColumns'].split(",");
+    var adminCodes = $("#adminCodes").get()[0];
+
+    if (!adminCodes) return;
+
     var adminCols = adminCodes.getElementsByTagName('col');
     var contractorCols = contractorCodes.getElementsByTagName('col');
 
@@ -567,9 +571,13 @@ const hideColums = function () {
             b.style.visibility = "collapse";
         }
     });
+    
 }
 
 const showAllColumns = function () {
+    var adminCodes = $("#adminCodes").get()[0];
+
+    if (!adminCodes) return;
     var adminCols = adminCodes.getElementsByTagName('col');
     var contractorCols = contractorCodes.getElementsByTagName('col');
     Object.values(adminCols).concat(Object.values(contractorCols)).forEach(x => x.style.visibility = "");
@@ -619,6 +627,12 @@ $(function () {
         domHide(assignButtonClass);
         enableEditable(targetEditable);
         $(`${saveButtonClass}[${targetAttr}]`).click();
+
+        let target = $(targetEditable);
+        if (target.attr("type") == "file") {
+            target.removeAttr("contenteditable");
+        }
+
     });
 
     $(saveButtonClass).click(function (e) {
@@ -740,6 +754,35 @@ $(function () {
             hideColums();
         });
 
+    });
+
+    $("#attachButton").on("click", function (e) {
+        e.preventDefault();
+        $('#attachFile').click();
+    });
+
+    $('#attachFile').change(function () {
+        abp.notify.info(l("Running Task"));
+        let form = $('#attachForm');
+        form.ajaxForm({
+            dataType: "json",
+            contentType: "multipart/form-data",
+            headers: {
+                "Accept": "application/json"
+            },
+            success: function (data) {
+                if (data === "Error") {
+                    promptError("File Not Correct!");
+                }
+                else {
+                    promptOK();
+                    $("#mailAttachment").html(data).attr("href", `/download/${data}`);
+                    $('#attachFile').val(null);
+                }
+            }
+        });
+
+        form.submit();
     });
 
     const isAdmin = abp.auth.isGranted("AbpIdentity.Roles.ManagePermissions");

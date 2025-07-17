@@ -123,3 +123,7 @@ table.dataTable tbody tr td i.fa.fa-check {
 option {
     text-align: left;
 }
+
+#attachForm {
+    display: none;
+}
