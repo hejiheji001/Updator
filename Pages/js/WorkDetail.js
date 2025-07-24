@@ -1,4 +1,4 @@
-const template = "template";
+﻿const template = "template";
 const container = "container";
 const detail = "detail";
 const item = "item";
@@ -326,17 +326,20 @@ const update = function (dom, callback) {
     
     let getData = function () {
         let data = dom.attr("data");
-        let domList = $(`tr[data=${data}] ${editableClass}${suffixSelector}`).clone();
-        let tempForm = $("<form id='tmpForm'></form>").append(domList);
+        let domList = $(`tr[data=${data}] ${editableClass}${suffixSelector}`);
+        let tempForm = $("<form id='tmpForm'></form>").append(domList.clone());
+
         let files = [];
         if (target === file || target === image) {
-            let fileDomList = tempForm.find(fileType);
+            let fileDomList = $(domList.get().filter(x => $(x).attr("type") == "file"));
             files = fileDomList.get().flatMap(x => Object.values(x.files));
-            $(updateForm).append(fileDomList);
+            $(updateForm).append(fileDomList.clone());
             fileDomList.hide();
         }
+
         return tempForm.serializeArray().concat(files);
     }
+
 
     let withIssued = $("[name='work.IssuedActual']").val();
     if (target === item) {
@@ -458,7 +461,7 @@ const showCodeDialog = function (dom) {
 }
 
 const linkSearch = function (dom) {
-    let search = $("#CodeTable_filter > label > input");
+    let search = $("#CodeTable_wrapper [type='search']");
     let position = $(dom).offset();
     position.left += 100;
     position.top -= 100;
@@ -503,9 +506,15 @@ const prepareDom = function (dom, targetFor, general) {
         let tag = $(this).attr("tag");
         let type = $(this).attr("type");
         let name = $(this).attr("name");
+        let option = $(this).attr("option");
         let options = '';
         if (tag === "select") {
-            options = $("[template-name='item.JobLocation.Location']").html();
+            if (option) {
+                options = $(option).html();
+            } else {
+                options = $("[template-name='item.JobLocation.Location']").html();
+            }
+
             general = general.replace("form-control", "form-select");
         }else {
             general = general.replace("form-select", "form-control");
@@ -628,10 +637,10 @@ $(function () {
         enableEditable(targetEditable);
         $(`${saveButtonClass}[${targetAttr}]`).click();
 
-        let target = $(targetEditable);
-        if (target.attr("type") == "file") {
-            target.removeAttr("contenteditable");
-        }
+        //let target = $(targetEditable);
+        //if (target.attr("type") == "file") {
+        //    target.removeAttr("contenteditable");
+        //}
 
     });
 
@@ -730,18 +739,6 @@ $(function () {
            $(containers[i]).append(imgs);
        }
     });
-
-    const codeTable = $('#nav-tasks > table').DataTable({
-        info: false,
-        paging: false,
-        searching: true,
-        ordering: false
-    });
-
-    $(codeInitSelectId).change(function () {
-        let capital = $(this).val();
-        codeTable.columns(1).search("^" + capital, true, true).draw();
-    });
     
     $(checkAll).click(function () {
         let checked = $(this).prop("checked");
@@ -808,7 +805,21 @@ $(function () {
             },
         ]
     });
-    $('#CodeTable').DataTable(data);
+    window.ct = $('#CodeTable').DataTable(data);
+
+    if (!isArchived) {
+        const joblist = $('#nav-tasks > table').DataTable({
+            info: false,
+            paging: false,
+            searching: true,
+            ordering: false
+        });
+
+        $(codeInitSelectId).change(function () {
+            let capital = $(this).val();
+            joblist.columns(0).search("^" + capital, true, true).draw();
+        });
+    }
 
     hideColums();
 });
