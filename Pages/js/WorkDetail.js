@@ -274,6 +274,7 @@ const initUpdateButton = function(e) {
                         return dom;
                     });
                     promptOK('Complete!');
+                    location.reload();
                 }
             }
             
@@ -282,7 +283,7 @@ const initUpdateButton = function(e) {
             }
         }
 
-        hideColums();
+        hideColumns();
     }.bind(this));
 }
 
@@ -328,18 +329,15 @@ const update = function (dom, callback) {
         let data = dom.attr("data");
         let domList = $(`tr[data=${data}] ${editableClass}${suffixSelector}`);
         let tempForm = $("<form id='tmpForm'></form>").append(domList.clone());
-
         let files = [];
         if (target === file || target === image) {
-            let fileDomList = $(domList.get().filter(x => $(x).attr("type") == "file"));
+            let fileDomList = $(domList.get().filter(x => $(x).attr("type") === "file"));
             files = fileDomList.get().flatMap(x => Object.values(x.files));
-            $(updateForm).append(fileDomList.clone());
-            fileDomList.hide();
+            let clone = fileDomList.clone();
+            $(updateForm).append(clone);
         }
-
         return tempForm.serializeArray().concat(files);
     }
-
 
     let withIssued = $("[name='work.IssuedActual']").val();
     if (target === item) {
@@ -372,32 +370,16 @@ const update = function (dom, callback) {
         }).then(function () {
             submitForm(formData, targetData, allowSubmit);
         });
-    } else if (target === image) {
-        formData = getData();
-
-        let content = formData.find(x => x.constructor.name === "File");
-        if (!content) {
-            allowSubmit = false;
-            dom.html(save);
-            abp.message.error(l("FilesAreEmpty"));
-        }
-        
-        if (!withIssued) {
-            allowSubmit = false;
-            dom.html(save);
-            abp.message.error(l("IssuedActualTimeNotAssigned"));
-        }
-        submitForm(formData, targetData, allowSubmit);
-    } else if (target === file) {
+    } else if (target === image || target === file) {
         formData = getData();
         
-        let content = formData.find(x => x.constructor.name === "File");
-        if (!content) {
-            allowSubmit = false;
-            dom.html(save);
-            abp.message.error(l("FilesAreEmpty"));
-            return;
-        }
+        // let content = formData.find(x => x.constructor.name === "File");
+        // if (!content) {
+        //     allowSubmit = false;
+        //     dom.html(save);
+        //     abp.message.error(l("FilesAreEmpty"));
+        //     return;
+        // }
 
         if (!withIssued) {
             allowSubmit = false;
@@ -557,42 +539,48 @@ const prepareDom = function (dom, targetFor, general) {
     })
 }
 
-const hideColums = function () {
-    var arr = localStorage['hiddenColumns'].split(",");
-    var adminCodes = $("#adminCodes").get()[0];
+const hideColumns = function () {
+    let info = localStorage['hiddenColumns'];
+    if (info) {
+        let arr = info.split(",");
+        let adminCodes = $("#adminCodes").get()[0];
 
-    if (!adminCodes) return;
+        if (!adminCodes) return;
 
-    var adminCols = adminCodes.getElementsByTagName('col');
-    var contractorCols = contractorCodes.getElementsByTagName('col');
+        let adminCols = adminCodes.getElementsByTagName('col');
+        let contractorCols = contractorCodes.getElementsByTagName('col');
 
-    showAllColumns();
+        showAllColumns();
 
-    arr.forEach(i => {
-        var a = adminCols[i - 1];
-        var b = contractorCols[i - 1];
+        arr.forEach(i => {
+            let a = adminCols[i - 1];
+            let b = contractorCols[i - 1];
 
-        if (a) {
-            a.style.visibility = "collapse";
-        }
+            if (a) {
+                a.style.visibility = "collapse";
+            }
 
-        if (b) {
-            b.style.visibility = "collapse";
-        }
-    });
-    
+            if (b) {
+                b.style.visibility = "collapse";
+            }
+        });
+    }
 }
 
 const showAllColumns = function () {
-    var adminCodes = $("#adminCodes").get()[0];
+    let adminCodes = $("#adminCodes").get()[0];
 
     if (!adminCodes) return;
-    var adminCols = adminCodes.getElementsByTagName('col');
-    var contractorCols = contractorCodes.getElementsByTagName('col');
+    let adminCols = adminCodes.getElementsByTagName('col');
+    let contractorCols = contractorCodes.getElementsByTagName('col');
     Object.values(adminCols).concat(Object.values(contractorCols)).forEach(x => x.style.visibility = "");
 }
 
+let fileSelector = null;
+let fileIndicator = $(`<span class="fileIndicator" style="color: red; font-weight: bold;">File Not Attached</span>`);
+
 $(function () {
+    
     $(editButtonClass).click(initEditButton);
 
     $(updateButtonClass).click(initUpdateButton);
@@ -637,11 +625,18 @@ $(function () {
         enableEditable(targetEditable);
         $(`${saveButtonClass}[${targetAttr}]`).click();
 
-        //let target = $(targetEditable);
-        //if (target.attr("type") == "file") {
-        //    target.removeAttr("contenteditable");
-        //}
+        if (targetFor === file || targetFor === image) {
+            fileSelector = $(`${updateFile} [type='file']`);
+            fileSelector.click(function () {
+                $(updateForm).append($(this));
+                $(`td${updateFile}`).append(fileIndicator);
+                fileSelector.hide();
+            });
 
+            fileSelector.change(function () {
+                fileIndicator.html(Object.values($(this).get()[0].files).map(x => x.name));
+            });
+        }
     });
 
     $(saveButtonClass).click(function (e) {
@@ -686,7 +681,7 @@ $(function () {
                     domShow(editButtonClass);
                     disableEditable(editableClass);
                     window.clearInterval(interval);
-                    hideColums();
+                    hideColumns();
                 }
                 success = updates.html() === save && (new Set(updates.get().map(x => $(x).html()))).size === 1;
             }, 200);
@@ -748,7 +743,7 @@ $(function () {
     $("#setupheader").click(function () {
         promptInput("Setup Header Display", `Input the <b>Index of Headers</b> you want to display or show by default.</br></br>For example, if you enter 1,2,4, then the 1st, 2nd and 4th columns will be invisible, if you enter 1, 3 again, the 2nd and 4th columns will show up but 1st and 3rd column will disappear.</br></br> Enter 0 to display all columns</br></br>Current ${(localStorage['hiddenColumns'] ? localStorage['hiddenColumns'] : "NO")} columns are hidden`, function (info) {
             localStorage['hiddenColumns'] = info;
-            hideColums();
+            hideColumns();
         });
 
     });
@@ -821,5 +816,5 @@ $(function () {
         });
     }
 
-    hideColums();
+    hideColumns();
 });
