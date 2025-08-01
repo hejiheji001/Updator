@@ -156,15 +156,7 @@ $(function () {
     
     $('#WorksTable_filter').append(filter);
 
-    // setTimeout(function () {
-    //     let anchor = location.href.split("#");
-    //     if (anchor.length === 2) {
-    //         let command = anchor[1];
-    //         if (command) {
-    //             $(`#${command}`).get()[0].dispatchEvent(new MouseEvent("click"));
-    //         }
-    //     }
-    // }, 1000);
+    $("#lpx-sidebar > nav > div > i").click();
     
     init = true;
 });

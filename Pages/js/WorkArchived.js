@@ -176,5 +176,8 @@ $(function () {
         dataTable.draw();
     });
     $('#WorksTable_filter').append(filter);
+
+    $("#lpx-sidebar > nav > div > i").click();
+
     init = true;
 });

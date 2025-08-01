@@ -817,4 +817,6 @@ $(function () {
     }
 
     hideColumns();
+
+    $("#lpx-sidebar > nav > div > i").click();
 });

@@ -127,3 +127,7 @@ option {
 #attachForm {
     display: none;
 }
+
+.dt-column-title {
+    text-align: left;
+}
