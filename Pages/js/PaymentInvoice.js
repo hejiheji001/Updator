@@ -18,4 +18,6 @@ $(function () {
 
         form.submit();
     })
+
+    $("#lpx-sidebar > nav > div > i").click();
 });

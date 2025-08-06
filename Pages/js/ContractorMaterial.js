@@ -89,7 +89,6 @@ $(function () {
                 className: 'left',
                 render: function (data) {
                     return data[0];
-                    // return `<a class="padding-left-10" href="${detailPage}?id=${data[1]}" target="_blank">${data[0]}</a>`;
                 }
             },
             {
@@ -169,7 +168,7 @@ $(function () {
                 }).then(result => {
                     if (result.isConfirmed) {
                         let productCreateModal = new abp.ModalManager({
-                            viewUrl: `/Works/ContractorMaterialCreateModal?id=${result.value}`
+                            viewUrl: `/Works/MaterialCreateModal?id=${result.value}`
                         });
                         productCreateModal.open();
                         productCreateModal.onResult(function(){
@@ -187,6 +186,8 @@ $(function () {
     $("#paymentFileButton").click(function () {
         $("#paymentFile").click();
     });
+
+    $("#lpx-sidebar > nav > div > i").click();
     
     init = true;
 });

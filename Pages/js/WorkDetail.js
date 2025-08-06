@@ -10,7 +10,6 @@ const comment = "comment";
 const disabled = "disabled";
 const button = "Button";
 const blink = "blink-border";
-const spinner = "<i class='fa fa-spin fa-solid fa-spinner fa-spin-pulse'></i>";
 const addButton = `add${button}`;
 const exportButton = `export${button}`;
 const saveButton = `save${button}`;
@@ -373,14 +372,6 @@ const update = function (dom, callback) {
     } else if (target === image || target === file) {
         formData = getData();
         
-        // let content = formData.find(x => x.constructor.name === "File");
-        // if (!content) {
-        //     allowSubmit = false;
-        //     dom.html(save);
-        //     abp.message.error(l("FilesAreEmpty"));
-        //     return;
-        // }
-
         if (!withIssued) {
             allowSubmit = false;
             dom.html(save);

@@ -1,6 +1,8 @@
 const l = abp.localization.getResource('Dispatcher');
 const isAdmin = abp.auth.isGranted("AbpIdentity.Roles.ManagePermissions");
 const detailPage = abp.appPath + 'Works/WorkDetail';
+const spinner = "<i class='fa fa-spin fa-solid fa-spinner fa-spin-pulse'></i>";
+
 $(function () {
     abp.log.debug('Main.js initialized!');
     $(".lpx-brand-logo").html("BYDH Construction Ltd");

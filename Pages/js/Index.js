@@ -1,5 +1,5 @@
 let init = false;
-window.hintIndex = 4;
+window.hintIndex = 3;
 
 let specialOrders = [
     {

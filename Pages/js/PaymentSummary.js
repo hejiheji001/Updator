@@ -171,6 +171,8 @@ $(function () {
             $(".batchPayment.paid_False").click();
         }
     });
-    
+
+    $("#lpx-sidebar > nav > div > i").click();
+
     init = true;
 });
