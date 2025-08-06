@@ -187,6 +187,41 @@ $(function () {
         $("#paymentFile").click();
     });
 
+    $('#paymentFile').change(function () {
+        abp.notify.info(l("Running Task"));
+        let form = $('#uploadPaymentForm');
+        form.ajaxForm({
+            dataType: "json",
+            contentType: "multipart/form-data",
+            headers: {
+                "Accept": "application/json"
+            },
+            success: function (data) {
+                if (data === "Error") {
+                    promptError("Payment File Not Correct!");
+                }
+                else {
+                    let mismatched = data.mismatched;
+                    let matched = data.matched;
+                    let forcePaid = data.forcePaid;
+                    let separator = '<div style="border-bottom: solid">data</div>';
+
+                    let mismatchedStr = mismatched.map(x => `<button type="button" data="${x.orderId}" class="btn btn-primary btn-sm btn-tiny">Force Paid</button> ${x.orderId}: Actual ${x.actual}, Upstream ${x.upstream}`).join("</br>");
+                    let matchedStr = matched.map(x => `${x.orderId}: Actual ${x.actual}, Upstream ${x.upstream}`).join("</br>");
+                    let forcePaidStr = forcePaid.map(x => `${x.orderId}: Parent <a href="/Works/WorkDetail?id=${x.parentId}" target="_blank" class="btn btn-primary btn-sm btn-tiny">${x.parentOrderId}</a>`).join("</br>");
+                    let finalStr = separator.replace('data', `Mismatched Works: ${mismatched.length} Items`) + mismatchedStr + "<p/>" + separator.replace('data', `Matched Works: ${matched.length} Items`) + matchedStr + "<p/>" + separator.replace('data', `Force Paid Works: ${forcePaid.length} Items`) + forcePaidStr;
+
+                    promptHTML(finalStr, `Info`);
+                    bindForcePaid(finalStr);
+                }
+
+                $('#paymentFile').val(null);
+            }
+        });
+
+        form.submit();
+    });
+
     $("#lpx-sidebar > nav > div > i").click();
     
     init = true;
