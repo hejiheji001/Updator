@@ -81,6 +81,7 @@ const initGroupDownloadButton = function (e) {
     let locationFor = $(this).attr("location");
     window.location.href = `/downloadAll?workId=${dataFor}&target=${targetFor}&location=${locationFor}`;
 }
+
 const initEditButton = function(e) {
     e.preventDefault();
 
@@ -123,6 +124,8 @@ const initAssignButton = function (e) {
     domShow(checkAll);
 }
 
+const assignedJobs = "";
+
 const initAssignDoneButton = function (e) {
     e.preventDefault();
     
@@ -133,6 +136,7 @@ const initAssignDoneButton = function (e) {
     if (contractor !== "0" && jobs.length > 0) {
         let form = $(assignJobsFormId);
         $(assignJobsValueId).val(jobs);
+        assignedJobs = jobs;
         
         form.ajaxForm({
             dataType: "json",
@@ -686,13 +690,29 @@ $(function () {
     });
     
     $(".toggleAdminButton").click(function (e) {
-        $("#item-container[data='admin']").toggle("slow");
+        $(".item-container[data='admin']").toggle("slow");
     });
 
     $(".toggleContractorButton").click(function (e) {
-        $("#item-container[data='contractor']").toggle("slow");
+        $(".item-container[data='contractor']").toggle("slow");
     });
-    
+
+    $(".toggleAssigned").click(function (e) {
+        let data = $(this).attr("data") == "All" ? "Pending" : "All";
+        let str = `Listing ${data}`;
+
+        if (data == "All") {
+            $(".item-container[data='admin'] tr").show();
+        } else {
+            $(".item-container[data='admin'] tr").hide();
+            $(".item-container[data='admin'] input.assignCheckbox").not("[assigned]").each(function (e) {
+                $(`.item-container[data='admin'] tr[data='${$(this).attr("data")}']`).show();
+            });
+        }
+
+        $(this).html(str).attr("data", data);
+    });
+
     $(checkBox).get().forEach(x => {
         $(x).prop("checked", $(x).val() === "True");
     });
@@ -728,7 +748,7 @@ $(function () {
     
     $(checkAll).click(function () {
         let checked = $(this).prop("checked");
-        $(`#item-container ${assignCheckBoxClass}`).prop("checked", checked);
+        $(`.item-container[data='admin'] ${assignCheckBoxClass}:visible`).prop("checked", checked);
     });
 
     $("#setupheader").click(function () {
