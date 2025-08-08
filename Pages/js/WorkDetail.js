@@ -124,7 +124,7 @@ const initAssignButton = function (e) {
     domShow(checkAll);
 }
 
-const assignedJobs = "";
+let assignedJobs = "";
 
 const initAssignDoneButton = function (e) {
     e.preventDefault();
@@ -606,7 +606,7 @@ $(function () {
         
         let dataFor = $(this).attr("data");
         let templateSelector = `#${targetFor}-${template}`;
-        let containerSelector = `#${targetFor}-${container}[data='${type}']`;
+        let containerSelector = `.${targetFor}-${container}[data='${type}']`;
         let general = `class='${editable} form-control' ${targetAttr} data="${dataFor}" multiple`;
         let dom = $(`<tr class="addedContent" data="${dataFor}">${$(templateSelector).html().replaceAll("th", "td")}</td>`);
         prepareDom(dom, targetFor, general);
@@ -699,7 +699,7 @@ $(function () {
 
     $(".toggleAssigned").click(function (e) {
         let data = $(this).attr("data") == "All" ? "Pending" : "All";
-        let str = `Listing ${data}`;
+        let str = `Show ${data}`;
 
         if (data == "All") {
             $(".item-container[data='admin'] tr").show();
@@ -743,7 +743,15 @@ $(function () {
            let imgs = $(containers[i]).find(".imgContent").val().split(",").map(x => `<img src="/download/${x}" class="rounded"/>`);
            $(containers[i]).find("img").remove();
            $(containers[i]).append(imgs);
-       }
+        }
+
+        $('img').on('click', function (e) {
+            $('#imgViewer').html('').append($(e.currentTarget).clone().removeClass('img-responsive').removeClass('img-thumbnail'))
+            $('#viewImg').modal('show');
+            $("#closeImgView").click(function () {
+                $('#viewImg').modal('hide');
+            });
+        });
     });
     
     $(checkAll).click(function () {

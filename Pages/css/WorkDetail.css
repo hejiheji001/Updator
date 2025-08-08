@@ -131,3 +131,34 @@ option {
 /*.dt-column-title {
     text-align: left;
 }*/
+
+.img-wrapper::after {
+    font-size: 12px;
+    content: 'Click Image To View Full Size';
+    display: block;
+}
+
+#imgViewer::-webkit-scrollbar {
+    -webkit-appearance: none;
+    height: 10px;
+}
+
+#imgViewer::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgba(0,0,0,.5);
+    box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+#imgViewer img {
+    max-width: 100%;
+}
+
+#imgViewer {
+    text-align: center;
+}
+
+#imgViewer .modal-header {
+    margin: 0;
+    padding: 5px;
+    padding-left: calc(100% - 60px);
+}
